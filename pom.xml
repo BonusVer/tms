@@ -9,7 +9,8 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>Admin-app</module>
+        <module>User-app</module>
+        <module>task-service</module>
     </modules>
 
     <properties>
