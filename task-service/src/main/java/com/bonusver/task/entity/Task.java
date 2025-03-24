@@ -29,13 +29,38 @@ public class Task {
 
     @Column(name = "c_priority")
     @NotNull
-    private String priority;
+    @Enumerated(EnumType.STRING)
+    private Priority priority;
 
     @Column(name = "c_status")
     @NotNull
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "c_id_author")
+    private User author;
+
+    @Column(name = "c_id_author", insertable = false, updatable = false)
+    private Integer idAuthor;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "c_id_executor")
+    private User executor;
+
+    @Column(name = "c_id_executor", insertable = false, updatable = false)
+    private Integer idExecutor;
+
+    public enum Status {
+        WAITING,
+        IN_PROGRESS,
+        COMPLETED
+    }
+
+    public enum Priority {
+        HIGH,
+        MEDIUM,
+        LOW
+    }
     
 }

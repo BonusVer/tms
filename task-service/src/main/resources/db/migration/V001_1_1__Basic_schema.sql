@@ -1,7 +1,7 @@
 create schema if not exists task_service;
 
-create type priority as ENUM ('high', 'medium', 'low');
-create type status as ENUM ('waiting', 'in progress', 'completed')
+create type priority as ENUM ('HIGH', 'MEDIUM', 'LOW');
+create type status as ENUM ('WAITING', 'IN', 'completed')
 
 create table task_service.t_task
 (
@@ -17,6 +17,7 @@ create table task_service.t_task
 create table task_service.t_user
 (
     id serial primary key,
-    c_name varchar(50) not null,
+    c_first_name varchar(50),
+    c_last_name varchar(50),
     c_email varchar(50) not null, unique
 );
