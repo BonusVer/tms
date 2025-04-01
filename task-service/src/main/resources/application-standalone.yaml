@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/tms
+    username: admin
+    password: admin
+
+  flyway:
+    schemas:
+      - public
+      - standalone
