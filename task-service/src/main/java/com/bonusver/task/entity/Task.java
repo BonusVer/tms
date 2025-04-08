@@ -3,53 +3,46 @@ package com.bonusver.task.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.proxy.HibernateProxy;
 
-@Data
+import java.util.Objects;
+
+@Getter
+@Setter
+@ToString(exclude = {"author", "executor"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(schema = "task_service", name = "t_task")
+@Table(name = "t_task", schema = "task_service")
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @Column(name = "c_title")
-    @NotNull
-    @Size(min = 3, max = 50)
+    @Column(name = "title")
     private String title;
 
-    @Column(name = "c_details")
-    @NotNull
-    @Size(max = 2000)
+    @Column(name = "details")
     private String details;
 
-    @Column(name = "c_priority")
-    @NotNull
+    @Column(name = "priority")
     @Enumerated(EnumType.STRING)
     private Priority priority;
 
-    @Column(name = "c_status")
-    @NotNull
+    @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private Status status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "c_id_author")
+    @JoinColumn(name = "author_id")
     private User author;
 
-    @Column(name = "c_id_author", insertable = false, updatable = false)
-    private Integer idAuthor;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "c_id_executor")
+    @JoinColumn(name = "executor_id")
     private User executor;
 
-    @Column(name = "c_id_executor", insertable = false, updatable = false)
-    private Integer idExecutor;
 
     public enum Status {
         WAITING,
@@ -62,5 +55,20 @@ public class Task {
         MEDIUM,
         LOW
     }
-    
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy proxy ? proxy.getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy proxy ? proxy.getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        Task task = (Task) o;
+        return getId() != null && Objects.equals(getId(), task.getId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy proxy ? proxy.getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
 }
