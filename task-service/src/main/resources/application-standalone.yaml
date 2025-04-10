@@ -3,6 +3,23 @@ spring:
     url: jdbc:postgresql://localhost:5480/task_db
     username: postgres
     password: 111Zorro222!
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: task-service-app
+            client-secret: 6XZbq8Bthei1ZFfQOeyw1KTcOMFfKIXj
+            scope:
+              - openid
+              - view_task
+              - edit_task
+              - microprofile-jwt
+
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8081/realms/tms
+            user-name-attribute: email
   jpa:
     hibernate:
       ddl-auto: validate
