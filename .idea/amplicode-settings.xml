@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CrudOperationsStateConfig">
+    <option name="configPaths">
+      <map>
+        <entry key="dto" value="com.bonusver.task.entity.Task" />
+        <entry key="repository" value="com.bonusver.task.repository.TaskRepository" />
+      </map>
+    </option>
+  </component>
+  <component name="SpringProjectLocalState">
+    <option name="firstOpen" value="false" />
+  </component>
+</project>
