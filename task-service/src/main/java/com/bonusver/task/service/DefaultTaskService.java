@@ -70,8 +70,8 @@ public class DefaultTaskService implements TaskService{
         Task newTask = new Task();
         newTask.setTitle(request.getTitle());
         newTask.setDetails(request.getDetails());
-        newTask.setPriority(request.getPriority());
-        newTask.setStatus(request.getStatus());
+        newTask.setPriority(Task.Priority.valueOf(request.getPriority()));
+        newTask.setStatus(Task.Status.valueOf(request.getStatus()));
         newTask.setAuthor(author);
         newTask.setExecutor(executor);
 
@@ -92,17 +92,14 @@ public class DefaultTaskService implements TaskService{
             task.setDetails(request.getDetails());
         if (request.getPriority() != null)
         //тут надо будет поработать с TaskDto и вместо Стрингов сделать Энум
-            task.setPriority(request.getPriority());
+            task.setPriority(Task.Priority.valueOf(request.getPriority()));
         if (request.getStatus() != null)
-            task.setStatus(request.getStatus());
+            task.setStatus(Task.Status.valueOf(request.getStatus()));
         if (request.getExecutorEmail() != null) {
             User executor = this.userRepository.findByEmail(request.getExecutorEmail())
                     .orElseThrow(() -> new ResourceNotFoundException("Executor Not Found with email: " + request.getExecutorEmail()));
             task.setExecutor(executor);
         }
-
-       // Task updatedTask = this.taskRepository.save(task);
-       // return this.taskMapper.toTaskDto(updatedTask);
     }
 
     @Override
@@ -110,5 +107,4 @@ public class DefaultTaskService implements TaskService{
     public void deleteTask(Long taskId) {
         this.taskRepository.deleteById(taskId);
     }
-
 }

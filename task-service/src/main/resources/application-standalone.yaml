@@ -9,7 +9,7 @@ spring:
         registration:
           keycloak:
             client-id: task-service-app
-            client-secret: 6XZbq8Bthei1ZFfQOeyw1KTcOMFfKIXj
+            client-secret: aZeOCfQyR4uUmOgmqf7SMwkJNYWOb3tq
             scope:
               - openid
               - view_task
@@ -20,6 +20,7 @@ spring:
           keycloak:
             issuer-uri: http://localhost:8081/realms/tms
             user-name-attribute: email
+
   jpa:
     hibernate:
       ddl-auto: validate
