@@ -5,21 +5,9 @@ spring:
     password: 111Zorro222!
   security:
     oauth2:
-      client:
-        registration:
-          keycloak:
-            client-id: task-service-app
-            client-secret: aZeOCfQyR4uUmOgmqf7SMwkJNYWOb3tq
-            scope:
-              - openid
-              - view_task
-              - edit_task
-              - microprofile-jwt
-
-        provider:
-          keycloak:
-            issuer-uri: http://localhost:8081/realms/tms
-            user-name-attribute: email
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8081/realms/tms
 
   jpa:
     hibernate:
