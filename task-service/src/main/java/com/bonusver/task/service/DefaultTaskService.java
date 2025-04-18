@@ -13,6 +13,8 @@ import com.bonusver.task.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
@@ -28,36 +30,41 @@ public class DefaultTaskService implements TaskService{
     private final TaskMapper taskMapper;
 
     @Override
-    public List<TaskDto> findAllTasks() {
-       List<Task> allTasks =  this.taskRepository.findAll();
-       return  allTasks.stream().map(taskMapper::toTaskDto).toList();
-
+    public Page<TaskDto> findAllTasks(String filter, Pageable pageable) {
+        Page<Task> taskPage;
+        if (filter != null && !filter.isBlank()) {
+            taskPage = this.taskRepository
+                    .findAllByTitleLikeIgnoreCase("%" + filter + "%", pageable);
+        } else {
+            taskPage = this.taskRepository.findAll(pageable);
+        }
+        return taskPage.map(taskMapper::toTaskDto);
     }
 
     @Override
-    public List<TaskDto> findAllTasksByAuthorId(Long authorId) {
+    public Page<TaskDto> findAllTasksByAuthorId(Long authorId, Pageable pageable) {
         if(!this.userRepository.existsById(authorId)) {
             throw new ResourceNotFoundException("User with id " + authorId + " not found");
         }
-        List<Task> tasksByAuthorId = this.taskRepository.findByAuthorId(authorId);
+        Page<Task> taskPage = this.taskRepository.findByAuthorId(authorId, pageable);
 
-        if(tasksByAuthorId.isEmpty()) {
+        if(taskPage.isEmpty()) {
             throw new ResourceNotFoundException("No tasks found for author with id " + authorId);
         }
-        return tasksByAuthorId.stream().map(taskMapper::toTaskDto).toList();
+        return taskPage.map(taskMapper::toTaskDto);
     }
 
     @Override
-    public List<TaskDto> findAllTasksByExecutorId(Long executorId) {
+    public Page<TaskDto> findAllTasksByExecutorId(Long executorId, Pageable pageable) {
         if(!this.userRepository.existsById(executorId)) {
             throw new ResourceNotFoundException("User with id " + executorId + " not found");
         }
-        List<Task> tasksByExecutorId = this.taskRepository.findByExecutorId(executorId);
+        Page<Task> taskPage = this.taskRepository.findByExecutorId(executorId, pageable);
 
-        if(tasksByExecutorId.isEmpty()) {
+        if(taskPage.isEmpty()) {
             throw new ResourceNotFoundException("No tasks found for executor with id " + executorId);
         }
-        return tasksByExecutorId.stream().map(taskMapper::toTaskDto).toList();
+        return taskPage.map(taskMapper::toTaskDto);
     }
 
 
