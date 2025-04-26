@@ -137,6 +137,29 @@ public class DefaultTaskService implements TaskService{
         }
     }
 
+    @Override
+    @Transactional
+    public TaskDto findTaskById(Long taskId) {
+        Task task = this.taskRepository.findById(taskId)
+                .orElseThrow(()-> new ResourceNotFoundException("Task Not Found with id: " + taskId));
+        return this.taskMapper.toTaskDto(task);
+    }
+
+    @Override
+    public boolean ifUserAllowed(Long taskId, String currentUser) {
+        Task task = this.taskRepository.findById(taskId)
+                .orElseThrow(()-> new ResourceNotFoundException("Task Not Found with id: " + taskId));
+
+        return currentUser.equals(task.getAuthor().getEmail()) || currentUser.equals(task.getExecutor().getEmail());
+    }
+
+    @Override
+    public Long getUserId(String email) {
+        return this.userRepository.findByEmail(email)
+                .map(User::getId)
+                .orElseThrow(()-> new ResourceNotFoundException("User Not Found with email: " + email));
+    }
+
     private boolean isStatusOnlyUpdate(TaskDto request) {
         return request.getTitle() == null
                 && request.getDetails() == null
