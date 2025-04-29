@@ -71,7 +71,7 @@ public class DefaultTaskService implements TaskService{
     @Override
     @Transactional
     public CreateTaskDto saveTask(CreateTaskDto request, String currentUser) {
-        //Данный код будет потом преобразован данными из токена
+
         User author = this.userRepository.findByEmail(currentUser)
                 .orElseThrow(()-> new ResourceNotFoundException("Author Not Found with email: " + currentUser));
         User executor = this.userRepository.findByEmail(request.getExecutorEmail())
