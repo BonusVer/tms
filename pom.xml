@@ -11,6 +11,7 @@
     <modules>
         <module>User-app</module>
         <module>task-service</module>
+        <module>comment-service</module>
     </modules>
 
     <properties>
