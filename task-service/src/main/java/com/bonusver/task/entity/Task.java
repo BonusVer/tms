@@ -15,6 +15,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity
 @Table(name = "t_task", schema = "task_service")
+
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
